@@ -1,0 +1,5 @@
+seeds:
+  name: customer_data
+  description: "customer_info"
+  columns:
+    name: customer_id
