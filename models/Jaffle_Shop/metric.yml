@@ -1,0 +1,30 @@
+# models/marts/product/schema.yml
+
+version: 2
+
+models:
+ - name: metric_orders
+
+metrics:
+  - name: new_orders
+    label: OrderCount
+    model: ref('metric_orders')
+    description: "new ordrs"
+
+    calculation_method: count_distinct
+    expression: order_id 
+
+    timestamp: order_date
+    time_grains: [day, week, month, quarter, year, all_time]
+  
+    filters:
+      - field: order_date
+        operator: '>='
+        value: "'2020-01-01'"
+
+    meta: {team: Finance}
+
+    # general properties
+    config:
+      enabled: true | false
+      treat_null_values_as_zero: true | false

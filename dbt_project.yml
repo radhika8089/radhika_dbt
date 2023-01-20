@@ -9,6 +9,11 @@ config-version: 2
 # This setting configures which "profile" dbt uses for this project.
 profile: 'default'
 
+vars: 
+  customer_filter: '11'
+  paymeth: ('bank_transfer','coupon')
+
+  
 # These configurations specify where dbt should look for different types of files.
 # The `source-paths` config, for example, states that models in this project can be
 # found in the "models/" directory. You probably won't need to change these!
@@ -31,8 +36,18 @@ clean-targets:         # directories to be removed by `dbt clean`
 # In this example config, we tell dbt to build all models in the example/ directory
 # as tables. These settings can be overridden in the individual model files
 # using the `{{ config(...) }}` macro.
+
+seeds:
+  +schema: seed_data
+
 models:
-  my_new_project:
+    post-hook:
+      - "insert into RAW.DBT_RADHIKATRAINING.auditdata values ('abc',current_date());"
     # Applies to all files under models/example/
     example:
       materialized: view
+    jaffle_shop:
+      schema: test
+    dbt_project:
+      database: QWT
+      schema: transforming
